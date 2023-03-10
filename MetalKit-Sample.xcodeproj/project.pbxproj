@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		E41529F129B8CCB4008D2BCE /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41529F029B8CCB4008D2BCE /* Shaders.metal */; };
-		E41529F829BAF593008D2BCE /* Complex.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41529F729BAF593008D2BCE /* Complex.metal */; };
 		E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF0E29B4DF75007A3B11 /* MetalKit_SampleApp.swift */; };
 		E47DAF1129B4DF75007A3B11 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF1029B4DF75007A3B11 /* ContentView.swift */; };
 		E47DAF1329B4DF76007A3B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E47DAF1229B4DF76007A3B11 /* Assets.xcassets */; };
@@ -19,8 +18,6 @@
 /* Begin PBXFileReference section */
 		E41529F029B8CCB4008D2BCE /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		E41529F329BA8F9C008D2BCE /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
-		E41529F629BAF340008D2BCE /* Complex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Complex.h; sourceTree = "<group>"; };
-		E41529F729BAF593008D2BCE /* Complex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Complex.metal; sourceTree = "<group>"; };
 		E47DAF0B29B4DF75007A3B11 /* MetalKit-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MetalKit-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E47DAF0E29B4DF75007A3B11 /* MetalKit_SampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalKit_SampleApp.swift; sourceTree = "<group>"; };
 		E47DAF1029B4DF75007A3B11 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,8 +63,6 @@
 				E47DAF1C29B5B2B7007A3B11 /* Renderer.swift */,
 				E41529F029B8CCB4008D2BCE /* Shaders.metal */,
 				E41529F329BA8F9C008D2BCE /* definitions.h */,
-				E41529F629BAF340008D2BCE /* Complex.h */,
-				E41529F729BAF593008D2BCE /* Complex.metal */,
 			);
 			path = "MetalKit-Sample";
 			sourceTree = "<group>";
@@ -151,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E47DAF1D29B5B2B7007A3B11 /* Renderer.swift in Sources */,
-				E41529F829BAF593008D2BCE /* Complex.metal in Sources */,
 				E47DAF1129B4DF75007A3B11 /* ContentView.swift in Sources */,
 				E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */,
 				E41529F129B8CCB4008D2BCE /* Shaders.metal in Sources */,
