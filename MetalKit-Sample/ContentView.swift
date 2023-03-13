@@ -103,7 +103,7 @@ struct MainView: View {
 
     var body:some View{
         ZStack(alignment: .leading){
-            ContentView().gesture(SimultaneousGesture(drag, pinch))
+            ContentView().gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, rotate)))
             VStack{
                 Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
                 Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
