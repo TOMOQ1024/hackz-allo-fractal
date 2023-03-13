@@ -10,6 +10,7 @@ import MetalKit
 import Foundation
 
 struct MainView: View {
+    let musicPlayer = SoundPlayer()
     @State var position: CGSize = CGSize(width: 0, height: 0)
     @State var currentPosition: CGSize = CGSize(width: 0, height: 0)
     @State var positionPast = Array(repeating:CGSize(width: 0, height: 0), count: 3)
@@ -27,6 +28,7 @@ struct MainView: View {
     @State var rotationPast:[Angle] = Array(repeating:Angle(), count: 3)
     @State var rotationSpeed: Angle = Angle()
     @State var rttPastIndex: Int = 0
+    
     
     var drag: some Gesture{
         DragGesture()
@@ -74,6 +76,16 @@ struct MainView: View {
                     posPastIndex += 1
                 }
                 pinchSpeed = value - pinchPast[pinPastIndex]
+                //Music Update
+                if(pinchRate > 1){
+                    if(musicPlayer.isPlay){
+                        musicPlayer.update(rate: pinchRate)
+                    }else{
+                        musicPlayer.musicPlay(rate: pinchRate)
+                    }
+                }else{
+                    musicPlayer.stopAllMusic()
+                }
             }
             .onEnded{value in
                 pinchRate = currentPinchRate + value

@@ -15,7 +15,7 @@ struct MetalKit_SampleApp: App {
     // 宣言だけで追加，メソッドで位置とかの調整．
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
                 //.frame(width: 800, height: 600)
         }
     }

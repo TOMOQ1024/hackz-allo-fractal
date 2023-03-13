@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7888D6A129BF175800942DC5 /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7888D6A029BF175800942DC5 /* SoundPlayer.swift */; };
 		E41529F129B8CCB4008D2BCE /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41529F029B8CCB4008D2BCE /* Shaders.metal */; };
 		E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF0E29B4DF75007A3B11 /* MetalKit_SampleApp.swift */; };
 		E47DAF1129B4DF75007A3B11 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF1029B4DF75007A3B11 /* ContentView.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7888D6A029BF175800942DC5 /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
 		E41529F029B8CCB4008D2BCE /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		E41529F329BA8F9C008D2BCE /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
 		E47DAF0B29B4DF75007A3B11 /* MetalKit-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MetalKit-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +58,7 @@
 		E47DAF0D29B4DF75007A3B11 /* MetalKit-Sample */ = {
 			isa = PBXGroup;
 			children = (
+				7888D6A029BF175800942DC5 /* SoundPlayer.swift */,
 				E47DAF0E29B4DF75007A3B11 /* MetalKit_SampleApp.swift */,
 				E47DAF1029B4DF75007A3B11 /* ContentView.swift */,
 				E47DAF1229B4DF76007A3B11 /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7888D6A129BF175800942DC5 /* SoundPlayer.swift in Sources */,
 				E47DAF1D29B5B2B7007A3B11 /* Renderer.swift in Sources */,
 				E47DAF1129B4DF75007A3B11 /* ContentView.swift in Sources */,
 				E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */,
