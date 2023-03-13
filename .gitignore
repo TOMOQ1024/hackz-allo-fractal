@@ -36,3 +36,4 @@ Pods/*
 *.swp
 .DS_Store
 /*.gcno
+UserInterfaceState.xcuserstate
