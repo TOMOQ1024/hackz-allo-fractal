@@ -13,7 +13,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 iOSInjectionProject/
-xcuserdata/
+**/xcuserdata/
 build/
 DerivedData/
 *.xcscmblueprint
