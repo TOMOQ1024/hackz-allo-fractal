@@ -16,7 +16,9 @@ struct MetalKit_SampleApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                //.frame(width: 800, height: 600)
+                .statusBar(hidden: true)
+                //.scaledToFill()
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }

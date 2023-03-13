@@ -16,12 +16,13 @@ struct VertexIn {
 
 struct Uniforms {
     float time;
-    float aspectRatio;
+    float2 res;
     float2 touch;
 };
 struct VertexOut {
     float4 pos [[ position ]];
     float3 color;
+    float2 res;
     float time;
 };
 
@@ -52,6 +53,7 @@ vertex VertexOut vertexShader(constant VertexIn *vertexIn [[buffer(0)]],
     output.pos = float4(pos.x, pos.y, 0, 1);
     output.color = float3(pos.x < -0.5 ? 0.0 : 1.0);
     output.time = uniforms.time;
+    output.res = uniforms.res;
     
     return output;
 }
@@ -60,8 +62,13 @@ vertex VertexOut vertexShader(constant VertexIn *vertexIn [[buffer(0)]],
 // 座標などから色を計算する関数．
 fragment half4 fragmentShader(VertexOut vertexIn [[stage_in]]) {
     float4 pos = vertexIn.pos;
-    int itr = MandelbrotCalc(pos.x / 1000.0, pos.y / 1000.0);
-    float c = itr < 0 ? 1.0 : (itr * 5) % 50 / 50.0;
+    float2 res = vertexIn.res;
+    float graphRadius = 2.0;
+    int itr = MandelbrotCalc(
+                             (pos.x / res.x * 2 - 1) * graphRadius,
+                             (pos.y / res.y * 2 - 1) * res.y / res.x * graphRadius
+                             );
+    half c = itr < 0 ? 1.0 : (itr * 5) % 50 / 50.0;
     //half3 c = half3(vertexIn.color);
     //float t = vertexIn.time;
     //return half4(c.x, c.y, (1.0+cos(t))/2.0, 1.0);

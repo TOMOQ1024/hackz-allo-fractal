@@ -10,7 +10,7 @@ import MetalKit
 
 struct Uniforms {
     var time: Float
-    var aspectRatio: Float
+    var res: SIMD2<Float>
     var touch: SIMD2<Float>
 }
 
@@ -35,9 +35,16 @@ class Renderer: NSObject, MTKViewDelegate {
 //        uniforms.aspectRatio = Float(mtkView.frame.size.width / mtkView.frame.size.height)
 //        preferredFramesTime = 1.0 / Float(mtkView.preferredFramesPerSecond)
         
-        uniforms = Uniforms(time: Float(0.0), aspectRatio: Float(0.0), touch: SIMD2<Float>())
-        uniforms.aspectRatio = Float(9 / 16)
+        uniforms = Uniforms(
+            time: Float(0.0),
+            res: SIMD2<Float>(
+                Float(UIScreen.main.nativeBounds.width),
+                Float(UIScreen.main.nativeBounds.height)
+            ),
+            touch: SIMD2<Float>())
+        //uniforms.aspectRatio = Float(9 / 16)
         uniforms.time = 0.0
+        //uniforms.res = [1179, 2556]
         preferredFramesTime = 1.0 / Float(60.0)
         
         
