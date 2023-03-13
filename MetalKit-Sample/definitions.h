@@ -12,8 +12,7 @@
 
 // Renderer.swift, Shaders.metal で使用する構造体
 struct Vertex {
-    vector_float2 position;
-    vector_float4 color;
+    vector_float2 pos;
 };
 
 

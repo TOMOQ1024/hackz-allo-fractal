@@ -7,18 +7,40 @@
 
 import MetalKit
 
+
+struct Uniforms {
+    var time: Float
+    var aspectRatio: Float
+    var touch: SIMD2<Float>
+}
+
 // ContentViewのmakeCoordinatorメソッド内で呼び出される
 class Renderer: NSObject, MTKViewDelegate {
     
-    var parent: ContentView
     var metalDevice: MTLDevice!
     var metalCommandQueue: MTLCommandQueue!
     let pipelineState: MTLRenderPipelineState
     let vertexBuffer: MTLBuffer
+    var vertices: [Vertex]!
+    var uniforms: Uniforms
+    private var indices: [UInt16]!
+    private var indexBuffer: MTLBuffer!
+    var mtkView: MTKView!
+    var preferredFramesTime: Float!
     
     init(_ parent: ContentView) {
         
-        self.parent = parent
+//        uniforms.aspectRatio = Float(mtkView.frame.size.width / mtkView.frame.size.height)
+//        preferredFramesTime = 1.0 / Float(mtkView.preferredFramesPerSecond)
+        
+        vertices = [Vertex]()
+        uniforms = Uniforms(time: Float(0.0), aspectRatio: Float(0.0), touch: SIMD2<Float>())
+        uniforms.aspectRatio = Float(9 / 16)
+        uniforms.time = 0.0
+        preferredFramesTime = 1.0 / Float(60.0)
+        
+        
+        // MTLDeviceの生成
         if let metalDevice = MTLCreateSystemDefaultDevice() {
             self.metalDevice = metalDevice
         }
@@ -37,9 +59,10 @@ class Renderer: NSObject, MTKViewDelegate {
         }
         
         let vertices = [
-            Vertex(position: [-1, -1], color: [1, 0, 0, 1]),
-            Vertex(position: [1, -1], color: [0, 1, 0, 1]),
-            Vertex(position: [0, 1], color: [0, 0, 1, 1])
+            Vertex(pos: [-1, -1]),
+            Vertex(pos: [1, -1]),
+            Vertex(pos: [1, 1]),
+            Vertex(pos: [-1, 1]),
         ]
         vertexBuffer = metalDevice.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<Vertex>.stride, options: [])!
         super.init()
@@ -50,6 +73,9 @@ class Renderer: NSObject, MTKViewDelegate {
     }
     
     func draw(in view: MTKView) {
+        
+        uniforms.time += preferredFramesTime
+        print(uniforms.time, preferredFramesTime!)
         
         //
         guard let drawable = view.currentDrawable else {
@@ -69,7 +95,9 @@ class Renderer: NSObject, MTKViewDelegate {
         let renderEncoder = commandBuffer?.makeRenderCommandEncoder(descriptor: renderPassDescriptor!)
         renderEncoder?.setRenderPipelineState(pipelineState)
         renderEncoder?.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-        renderEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3)
+        renderEncoder?.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
+        //renderEncoder?.drawIndexedPrimitives(type: .triangle, indexCount: indices.count, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
+        renderEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 4)
         renderEncoder?.endEncoding()
         
         //
@@ -77,5 +105,10 @@ class Renderer: NSObject, MTKViewDelegate {
         
         // GPUにコマンドバッファを送る
         commandBuffer?.commit()
+    }
+    
+    public func setVertices(_ vertices: [Vertex]) {
+        //self.vertices += vertices
+        print("hi")
     }
 }
