@@ -50,17 +50,19 @@ vertex VertexOut vertexShader(constant VertexIn *vertexIn [[buffer(0)]],
     
     VertexOut output;
     output.pos = float4(pos.x, pos.y, 0, 1);
-    output.color = float3(0.0);
+    output.color = float3(pos.x < -0.5 ? 0.0 : 1.0);
     output.time = uniforms.time;
     
     return output;
 }
 
+
 // 座標などから色を計算する関数．
 fragment half4 fragmentShader(VertexOut vertexIn [[stage_in]]) {
     float4 pos = vertexIn.pos;
-    int itr = MandelbrotCalc(pos.x * 5.0, pos.y * 5.0);
-    float c = itr < 0 ? 1.0 : itr / 50.0;
+    int itr = MandelbrotCalc(pos.x / 1000.0, pos.y / 1000.0);
+    float c = itr < 0 ? 1.0 : (itr * 5) % 50 / 50.0;
+    //half3 c = half3(vertexIn.color);
     //float t = vertexIn.time;
     //return half4(c.x, c.y, (1.0+cos(t))/2.0, 1.0);
     return half4(c, c, c, 1.0);

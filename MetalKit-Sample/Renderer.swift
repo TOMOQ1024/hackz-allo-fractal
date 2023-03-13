@@ -21,19 +21,20 @@ class Renderer: NSObject, MTKViewDelegate {
     var metalCommandQueue: MTLCommandQueue!
     let pipelineState: MTLRenderPipelineState
     let vertexBuffer: MTLBuffer
-    var vertices: [Vertex]!
     var uniforms: Uniforms
     private var indices: [UInt16]!
     private var indexBuffer: MTLBuffer!
     var mtkView: MTKView!
     var preferredFramesTime: Float!
+    var targetMetalTextureSize: CGSize = CGSize.zero
+    var metalViewDrawableSize: CGSize? = nil
+    var bufferWidth: Int = -1
     
     init(_ parent: ContentView) {
         
 //        uniforms.aspectRatio = Float(mtkView.frame.size.width / mtkView.frame.size.height)
 //        preferredFramesTime = 1.0 / Float(mtkView.preferredFramesPerSecond)
         
-        vertices = [Vertex]()
         uniforms = Uniforms(time: Float(0.0), aspectRatio: Float(0.0), touch: SIMD2<Float>())
         uniforms.aspectRatio = Float(9 / 16)
         uniforms.time = 0.0
@@ -60,9 +61,11 @@ class Renderer: NSObject, MTKViewDelegate {
         
         let vertices = [
             Vertex(pos: [-1, -1]),
-            Vertex(pos: [1, -1]),
-            Vertex(pos: [1, 1]),
-            Vertex(pos: [-1, 1]),
+            Vertex(pos: [ 1, -1]),
+            Vertex(pos: [-1,  1]),
+            Vertex(pos: [ 1, -1]),
+            Vertex(pos: [-1,  1]),
+            Vertex(pos: [ 1,  1]),
         ]
         vertexBuffer = metalDevice.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<Vertex>.stride, options: [])!
         super.init()
@@ -97,7 +100,7 @@ class Renderer: NSObject, MTKViewDelegate {
         renderEncoder?.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         renderEncoder?.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
         //renderEncoder?.drawIndexedPrimitives(type: .triangle, indexCount: indices.count, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
-        renderEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 4)
+        renderEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder?.endEncoding()
         
         //
