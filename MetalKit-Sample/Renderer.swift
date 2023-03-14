@@ -112,7 +112,6 @@ class Renderer: NSObject, MTKViewDelegate {
     func draw(in view: MTKView) {
         
         uniforms.time += preferredFramesTime
-        print(uniforms.time, preferredFramesTime!)
         
         //
         guard let drawable = view.currentDrawable else {
