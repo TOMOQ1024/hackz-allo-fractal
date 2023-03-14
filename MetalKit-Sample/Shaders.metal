@@ -33,15 +33,21 @@ struct VertexOut {
     Graph graph;
 };
 
+struct MCOut {
+    int itr;
+    float2 c;
+    float2 z;
+};
+
 
 // マンデルブロ集合の描画に必要な，基礎的な関数
-int MandelbrotCalc(float2 c, int max_itr = 50){
+MCOut MandelbrotCalc(float2 c, float absLimit = 2, int max_itr = 50){
     float2 z = float2(0, 0);
     for(int k=0; k<max_itr; ++k){
-        if(z.x*z.x + z.y*z.y > 4) return k;
+        if(length(z) > absLimit) return { k, c, z };
         z = float2(z.x*z.x - z.y*z.y, 2*z.x*z.y) + c;
     }
-    return -1;
+    return { -1, c, z };
 }
 
 // rotate float2
@@ -75,6 +81,49 @@ vertex VertexOut vertexShader(constant VertexIn *vertexIn [[buffer(0)]],
     return output;
 }
 
+float3 hsv2rgb(float3 hsv)
+{
+    float3 rgb;
+
+    if (hsv.y == 0){
+        // S（彩度）が0と等しいならば無色もしくは灰色
+        rgb.r = rgb.g = rgb.b = hsv.z;
+    } else {
+        // 色環のH（色相）の位置とS（彩度）、V（明度）からRGB値を算出する
+        hsv.x *= 6.0;
+        float i = floor (hsv.x);
+        float f = hsv.x - i;
+        float aa = hsv.z * (1 - hsv.y);
+        float bb = hsv.z * (1 - (hsv.y * f));
+        float cc = hsv.z * (1 - (hsv.y * (1 - f)));
+        if( i < 1 ) {
+            rgb.r = hsv.z;
+            rgb.g = cc;
+            rgb.b = aa;
+        } else if( i < 2 ) {
+            rgb.r = bb;
+            rgb.g = hsv.z;
+            rgb.b = aa;
+        } else if( i < 3 ) {
+            rgb.r = aa;
+            rgb.g = hsv.z;
+            rgb.b = cc;
+        } else if( i < 4 ) {
+            rgb.r = aa;
+            rgb.g = bb;
+            rgb.b = hsv.z;
+        } else if( i < 5 ) {
+            rgb.r = cc;
+            rgb.g = aa;
+            rgb.b = hsv.z;
+        } else {
+            rgb.r = hsv.z;
+            rgb.g = aa;
+            rgb.b = bb;
+        }
+    }
+    return rgb;
+}
 
 // 座標などから色を計算する関数．
 fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
@@ -88,11 +137,47 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
     float2 cpl = float2((pos.x / res.x * 2 - 1) * rad + ori.x,
                         (pos.y / res.y * 2 - 1) * res.y / res.x * rad - ori.y);
     
-    int itr = MandelbrotCalc(RotateAt(cpl, ori, ang));
-    half c_ = sqrt(itr / 50.0);
-    half3 c = itr < 0 ? 1.0 : half3(c_, 0, c_);
+    
+    //int
+    switch(0){
+        case 0:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 50);
+            half c = pow(1.0 * calcRes.itr / 1000, 0.5);
+            return calcRes.itr < 0 ? half4(1.0) : half4(c, 0, c, 1.0);
+        }
+        case 1:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 1000);
+            half arg = atan2(calcRes.z.y, calcRes.z.x);
+            half ab = exp(-1/length(calcRes.z));
+            float3 c = hsv2rgb(float3(fmod(fmod(arg/2/M_PI_F, 1.0)+1.0, 1.0), 0.2, ab));
+            return half4(half3(c), 1.0);
+        }
+        case 2:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 1000, 1000);
+            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/10000,0), ori, ang), 1000, 1000);
+            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/10000), ori, ang), 1000, 1000);
+            half narg = fmod(fmod(atan2(length(calcResX.z) - length(calcRes.z), length(calcResY.z) - length(calcRes.z))/2/M_PI_F, 1.0)+1.0, 1.0);
+            //half ab = exp(-1/length(calcRes.z));
+            float3 c = hsv2rgb(float3(narg, 0.2, 1.0));
+            return half4(half3(c), 1.0);
+        }
+        case 3:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 1000, 1000);
+            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/100000,0), ori, ang), 1000, 1000);
+            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/100000), ori, ang), 1000, 1000);
+            half narg = atan2(length(calcResX.z) - length(calcRes.z), length(calcResY.z) - length(calcRes.z));
+            half c = (cos(narg+0.8)+1)/2;
+            return half4(c, c, c, 1.0);
+        }
+    }
+    
+    // half3 c = itr < 0 ? 1.0 : half3(c_, 0, c_);
     //half3 c = half3(vertexIn.color);
     //float t = vertexIn.time;
     //return half4(c.x, c.y, (1.0+cos(t))/2.0, 1.0);
-    return half4(c, 1.0);
+    
 }
