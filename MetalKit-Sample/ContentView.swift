@@ -94,7 +94,7 @@ struct MainView: View {
                 pinchSpeed = value - pinchPast[pinPastIndex]
             }
     }
-    
+    @State var center: CGPoint = CGPoint(x: 0, y: 0)
     var rotate: some Gesture {
         RotationGesture()
             .onChanged{value in
@@ -113,10 +113,16 @@ struct MainView: View {
                 rotationSpeed = value - rotationPast[rttPastIndex]
             }
     }
-
+    var tap: some Gesture{
+        TapGesture(count: 2)
+            .onEnded({value in
+                center =
+            })
+    }
+    
     var body:some View{
         ZStack(alignment: .leading){
-            ContentView().gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, rotate)))
+            ContentView().gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch,rotate)))
             VStack{
                 Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
                 Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
