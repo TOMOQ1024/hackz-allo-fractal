@@ -30,6 +30,7 @@ struct Mandelbrot: UIViewRepresentable {
 
         mtkView.framebufferOnly = false
         mtkView.drawableSize = mtkView.frame.size
+        mtkView.isPaused = false
         return mtkView
     }
     func updateUIView(_ uiView: MTKView, context: UIViewRepresentableContext<Mandelbrot>) {
