@@ -144,7 +144,7 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
         case 0:
         {
             MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 50);
-            half c = pow(1.0 * calcRes.itr / 1000, 0.5);
+            half c = pow(1.0 * calcRes.itr / 50, 0.5);
             return calcRes.itr < 0 ? half4(1.0) : half4(c, 0, c, 1.0);
         }
         case 1:
@@ -174,6 +174,12 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
             half narg = atan2(length(calcResX.z) - length(calcRes.z), length(calcResY.z) - length(calcRes.z));
             half c = (cos(narg+0.8)+1)/2;
             return half4(c, c, c, 1.0);
+        }
+        case 4:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 200);
+            half c = calcRes.itr / 40.0;
+            return calcRes.itr < 0 ? half4(1.0) : half4(cos(c)*cos(c), sin(c)*sin(c), 1.0, 1.0);
         }
     }
     
