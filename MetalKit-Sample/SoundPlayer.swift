@@ -13,7 +13,7 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     var isPlay = false
     var musicPlayers : [AVAudioPlayer] = []
     
-    func musicPlay(rate: CGFloat) {
+    func musicPlay(rate: Float) {
         do{
             for i in 0..<TrakNumber {
                 let mp: AVAudioPlayer! = try AVAudioPlayer(data: musicDatas[i])
@@ -26,7 +26,7 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
                 }
                 
                 musicPlayers[i].numberOfLoops = -1
-                musicPlayers[i].setVolume(calcVolume(i: i, rate: Float(rate)), fadeDuration: 0.1)
+                musicPlayers[i].setVolume(calcVolume(i: i, rate: rate), fadeDuration: 0.1)
                 musicPlayers[i].play()
             }
             
@@ -36,9 +36,9 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
             print("ERR:can't play sound")
         }
     }
-    func update(rate: CGFloat){
+    func update(rate: Float){
         for i in 0..<TrakNumber {
-            musicPlayers[i].setVolume(calcVolume(i: i, rate: Float(rate)), fadeDuration: 0.1)
+            musicPlayers[i].setVolume(calcVolume(i: i, rate: rate), fadeDuration: 0.1)
         }
         
         print("music play!")

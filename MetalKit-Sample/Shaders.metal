@@ -20,7 +20,7 @@ struct Uniforms {
     float2 touch;
 };
 struct Graph {
-    float2 ori;
+    float2 origin;
     float radius;
     float angle;
 };
@@ -81,7 +81,7 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
     float4 pos = vIn.pos;
     float2 res = vIn.res;
     Graph gra = vIn.graph;
-    float2 ori = gra.ori;
+    float2 ori = gra.origin;
     float rad = gra.radius;
     float ang = gra.angle;
     

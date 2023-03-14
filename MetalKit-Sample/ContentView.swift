@@ -24,24 +24,24 @@ import Foundation
 //        self.rotateSpeed = rs
 //    }
 //}
+let arraySize = 2
 
 struct MainView: View {
     let musicPlayer = SoundPlayer()
     @State var position: CGSize = CGSize(width: 1, height: 0)
     @State var currentPosition: CGSize = CGSize(width: 0, height: 0)
-    @State var positionPast = Array(repeating:CGSize(width: 0, height: 0), count: 3)
+    @State var positionPast = Array(repeating:CGSize(width: 0, height: 0), count: arraySize)
     @State var positionSpeed: CGSize = CGSize(width: 0, height: 0)
     @State var posPastIndex: Int = 0
     
-    @State var pinchRate: CGFloat = 1.0
+    @State var pinchRate: Float = 1.0
     @State var currentPinchRate: CGFloat = 1.0
-    @State var pinchPast:[CGFloat] = Array(repeating:0.0, count: 3)
-    @State var pinchSpeed: CGFloat = 0.0
-    @State var pinPastIndex: Int = 0
+    @State var pinchPast:CGFloat = 1.0
+    @State var pinchSpeed: CGFloat = 1.0
     
     @State var rotation: Angle = Angle()
     @State var currentRotation: Angle = Angle()
-    @State var rotationPast:[Angle] = Array(repeating:Angle(), count: 3)
+    @State var rotationPast:[Angle] = Array(repeating:Angle(), count: arraySize)
     @State var rotationSpeed: Angle = Angle()
     @State var rttPastIndex: Int = 0
     
@@ -52,12 +52,14 @@ struct MainView: View {
                 width:  self.currentPosition.width + value.translation.width,
                 height: self.currentPosition.height + value.translation.height
             )
+            self.pinchSpeed = 1
+            self.rotationSpeed = Angle()
 //            positionSpeed = CGSize(width: 0, height: 0)
             positionPast[posPastIndex] = CGSize(
                 width: value.translation.width,
                 height:value.translation.height
             )
-            if(posPastIndex==2){
+            if(posPastIndex==arraySize-1){
                 posPastIndex = 0
             }else{
                 posPastIndex += 1
@@ -77,56 +79,63 @@ struct MainView: View {
                 width: value.translation.width - self.positionPast[posPastIndex].width,
                 height:value.translation.height - self.positionPast[posPastIndex].height
             )
+            for i in 0..<arraySize{
+                self.positionPast[i] = CGSize(width: 0, height: 0)
+            }
+            
         }
     }
-    
+    @State var isFirst: Bool = true
     var pinch: some Gesture {
         MagnificationGesture()
             .onChanged{value in
-                pinchRate = currentPinchRate * value
-                pinchPast[pinPastIndex] = value
+                if(isFirst){
+                    currentPinchRate = value
+                    isFirst = false
+                }
+                let delta = value/currentPinchRate
+                currentPinchRate = value
+                pinchPast = value
                 
-                if(posPastIndex==2){
-                    posPastIndex = 0
-                }else{
-                    posPastIndex += 1
-                }
-                pinchSpeed = value - pinchPast[pinPastIndex]
+                pinchSpeed = delta
                 //Music Update
-                if(pinchRate > 1){
-                    if(musicPlayer.isPlay){
-                        musicPlayer.update(rate: pinchRate)
-                    }else{
-                        musicPlayer.musicPlay(rate: pinchRate)
-                    }
-                }else{
-                    musicPlayer.stopAllMusic()
-                }
             }
             .onEnded{value in
-                pinchRate = currentPinchRate * value
-                currentPinchRate = pinchRate
-                pinchSpeed = value - pinchPast[pinPastIndex]
+                pinchSpeed = value / pinchPast
+                isFirst = true
             }
     }
     
     var rotate: some Gesture {
         RotationGesture()
             .onChanged{value in
+                print("\(value)")
                 rotation = currentRotation + value
                 rotationPast[rttPastIndex] = value
-                if(rttPastIndex==2){
+                rttPastIndex += 1
+                if(rttPastIndex == arraySize){
                     rttPastIndex = 0
-                }else{
-                    rttPastIndex += 1
                 }
                 rotationSpeed = value - rotationPast[rttPastIndex]
+                print(rotationSpeed)
             }
             .onEnded{value in
                 rotation = currentRotation + value
                 currentRotation = rotation
                 rotationSpeed = value - rotationPast[rttPastIndex]
+                for i in 0..<arraySize{
+                    rotationPast[i] = Angle()
+                }
+                print("------End------")
             }
+    }
+    var tap:some Gesture{
+        TapGesture(count:1)
+            .onEnded({
+            self.positionSpeed = CGSize(width: 0, height: 0)
+            self.pinchSpeed = 1
+            self.rotationSpeed = Angle()
+        })
     }
 
     var body:some View{
@@ -136,7 +145,7 @@ struct MainView: View {
                 zoomSpeed:Float(pinchSpeed),
                 rotateSpeed:Float(rotationSpeed.radians)
             )
-                .gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, rotate)))
+                .gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, SimultaneousGesture(rotate, tap))))
             VStack{
                 Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
                 Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
@@ -148,7 +157,7 @@ struct MainView: View {
                     pinchRate = 1.0
                 }){
                     Text("Reset")
-                }
+                }.position(x:200, y:-100)
             }
             
         }

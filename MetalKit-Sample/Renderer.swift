@@ -7,6 +7,13 @@
 
 import MetalKit
 
+func Clamp(_ m: Float, _ v: Float, _ M: Float) -> Float {
+    return max(min(M,v),m)
+}
+
+func Clamp2(_ m: SIMD2<Float>, _ v: SIMD2<Float>, _ M: SIMD2<Float>) -> SIMD2<Float> {
+    return max(min(M,v),m)
+}
 
 struct Uniforms {
     var time: Float
@@ -14,29 +21,29 @@ struct Uniforms {
     var touch: SIMD2<Float>
 }
 
+func rot(_ p:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
+    return [
+        p.x * cos(a) - p.y * sin(a),
+        p.y * cos(a) + p.x * sin(a)
+    ];
+}
+
+func rotAt(_ p:SIMD2<Float>, _ o:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
+    return rot(p-o, a) + o;
+}
+
 struct Graph {
-    var ori: SIMD2<Float>
+    var origin: SIMD2<Float>
     var radius: Float
     var angle: Float
     
     init() {
-        ori = [0.0, 0.0]
+        origin = [0.0, 0.0]
         radius = 2.0
         angle = Float(CGFloat.pi) / 2.0
-        ori = [0.0, 0.4]
+        origin = [0.0, 0.4]
         radius = 0.1
         angle = 0.5
-    }
-    
-    func rot(_ p:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
-        return [
-            p.x * cos(a) - p.y * sin(a),
-            p.y * cos(a) + p.x * sin(a)
-        ];
-    }
-    
-    func rotAt(_ p:SIMD2<Float>, _ o:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
-        return rot(p-o, a) + o;
     }
 }
 
@@ -56,6 +63,8 @@ class Renderer: NSObject, MTKViewDelegate {
     var targetMetalTextureSize: CGSize = CGSize.zero
     var metalViewDrawableSize: CGSize? = nil
     var bufferWidth: Int = -1
+    
+    let musicPlayer = SoundPlayer()
     
     init(_ parent: Mandelbrot, _ moveSpeed: SIMD2<Float>) {
         
@@ -112,6 +121,7 @@ class Renderer: NSObject, MTKViewDelegate {
     func draw(in view: MTKView) {
         
         uniforms.time += preferredFramesTime
+        updateGraph(false)
         
         //
         guard let drawable = view.currentDrawable else {
@@ -144,8 +154,49 @@ class Renderer: NSObject, MTKViewDelegate {
         commandBuffer?.commit()
     }
     
-    public func setVertices(_ vertices: [Vertex]) {
-        //self.vertices += vertices
-        let _ = print("hi")
+    var moveSpeed: SIMD2<Float> = [0, 0]
+    var zoomSpeed: Float = 1
+    var rotateSpeed: Float = 0
+    var zoomRate: Float = 1
+    func updateGraph(_ isDataProvided: Bool, _ _ms: SIMD2<Float> = [0, 0], _ _zs: Float = 0, _ _rs: Float = 0) {
+        var ms = _ms
+        var zs = pow(_zs, 0.5)
+        var rs = Clamp(-1,_rs,1)
+        
+        if(abs(rs) < 10e-4){
+            rs = 0
+        }
+        rs /= 3
+
+        
+        if(isDataProvided){
+            moveSpeed = ms
+            zoomSpeed = zs
+            rotateSpeed = rs
+        }
+        else{
+            ms = moveSpeed
+            zs = zoomSpeed
+            rs = rotateSpeed
+        }
+        let radSpeed = graph.radius / zs
+        graph.radius = Clamp(1.0e-4, radSpeed, 1.0e+3)
+        if(radSpeed > 1.0e-4 && radSpeed < 1.0e+3){
+            zoomRate *= zs
+        }
+        graph.angle -= rs/3
+        let origin_delta = rot([ms.x, ms.y] / uniforms.res.x * graph.radius * 2, -graph.angle)
+        graph.origin += [-origin_delta.x, -origin_delta.y]
+        graph.origin = Clamp2([-2, -2], graph.origin, [2, 2])
+        
+        if(zoomRate > 1){
+            if(musicPlayer.isPlay){
+                musicPlayer.update(rate: zoomRate)
+            }else{
+                musicPlayer.musicPlay(rate: zoomRate)
+            }
+        }else{
+            musicPlayer.stopAllMusic()
+        }
     }
 }

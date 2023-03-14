@@ -67,9 +67,9 @@
 				E47DAF1029B4DF75007A3B11 /* ContentView.swift */,
 				78883A2A29C017E7008152CB /* Mandelbrot.swift */,
 				78883A2C29C01838008152CB /* GraphStates.swift */,
+				E47DAF1C29B5B2B7007A3B11 /* Renderer.swift */,
 				E47DAF1229B4DF76007A3B11 /* Assets.xcassets */,
 				E47DAF1429B4DF76007A3B11 /* Preview Content */,
-				E47DAF1C29B5B2B7007A3B11 /* Renderer.swift */,
 				E41529F029B8CCB4008D2BCE /* Shaders.metal */,
 				E41529F329BA8F9C008D2BCE /* definitions.h */,
 			);
