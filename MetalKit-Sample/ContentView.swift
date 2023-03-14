@@ -45,6 +45,8 @@ struct MainView: View {
     @State var rotationSpeed: Angle = Angle()
     @State var rttPastIndex: Int = 0
     
+    @State var renderMode: Int = 0
+    
     var drag: some Gesture{
         DragGesture()
         .onChanged{value in
@@ -143,7 +145,8 @@ struct MainView: View {
             Mandelbrot(
                 moveSpeed:[Float(positionSpeed.width), Float(positionSpeed.height)],
                 zoomSpeed:Float(pinchSpeed),
-                rotateSpeed:Float(rotationSpeed.radians)
+                rotateSpeed:Float(rotationSpeed.radians),
+                renderMode:renderMode
             )
                 .gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, SimultaneousGesture(rotate, tap))))
             VStack{
@@ -159,7 +162,20 @@ struct MainView: View {
                     Text("Reset")
                 }.position(x:200, y:-100)
             }
-            
+            VStack {
+                Button(action: {
+                    print("hello")
+                    renderMode += 1
+                }){
+                    Image(systemName: "arrow.left.arrow.right")
+                }
+                    .frame(width: 100, height: 100, alignment: .leading)
+                    .padding()
+                    .font(.largeTitle)
+                    .foregroundColor(Color.white)
+                    .shadow(color: Color.black, radius: 3)
+                Spacer()
+            }
         }
     }
 }

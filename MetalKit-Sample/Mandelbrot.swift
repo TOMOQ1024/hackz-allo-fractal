@@ -13,6 +13,7 @@ struct Mandelbrot: UIViewRepresentable {
     let moveSpeed: SIMD2<Float>
     let zoomSpeed: Float
     let rotateSpeed: Float
+    let renderMode: Int
     
     func makeCoordinator() -> Renderer {
         Renderer(self, moveSpeed)
@@ -40,7 +41,8 @@ struct Mandelbrot: UIViewRepresentable {
             true,
             moveSpeed,
             zoomSpeed,
-            rotateSpeed
+            rotateSpeed,
+            renderMode
         )
     }
     

@@ -37,6 +37,7 @@ struct Graph {
     var radius: Float
     var angle: Float
     var renderMode: Int
+    var renderModesCount: Int = 5
     // 0: 黒→紫の単純なグラデーション
     // 1: 偏角を用いた虹色のグラデーション(BubbleCloud)
     // 2: 法線，虹色
@@ -165,7 +166,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var zoomSpeed: Float = 1
     var rotateSpeed: Float = 0
     var zoomRate: Float = 1
-    func updateGraph(_ isDataProvided: Bool, _ _ms: SIMD2<Float> = [0, 0], _ _zs: Float = 0, _ _rs: Float = 0) {
+    func updateGraph(_ isDataProvided: Bool, _ _ms: SIMD2<Float> = [0, 0], _ _zs: Float = 0, _ _rs: Float = 0, _ _rm: Int = -1) {
         var ms = _ms
         var zs = pow(_zs, 0.5)
         var rs = Clamp(-1,_rs,1)
@@ -180,6 +181,7 @@ class Renderer: NSObject, MTKViewDelegate {
             moveSpeed = ms
             zoomSpeed = zs
             rotateSpeed = rs
+            graph.renderMode = _rm % graph.renderModesCount
         }
         else{
             ms = moveSpeed
