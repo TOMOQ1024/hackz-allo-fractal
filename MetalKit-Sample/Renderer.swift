@@ -36,11 +36,17 @@ struct Graph {
     var origin: SIMD2<Float>
     var radius: Float
     var angle: Float
+    var renderMode: Int
+    // 0: 黒→紫の単純なグラデーション
+    // 1: 偏角を用いた虹色のグラデーション(BubbleCloud)
+    // 2: 法線，虹色
+    // 3: 法線，白黒
     
     init() {
         origin = [0.0, 0.0]
         radius = 2.0
         angle = Float(CGFloat.pi) / 2.0
+        renderMode = 1
         origin = [0.0, 0.4]
         radius = 0.1
         angle = 0.5
