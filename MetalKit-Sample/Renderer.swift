@@ -30,7 +30,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var metalViewDrawableSize: CGSize? = nil
     var bufferWidth: Int = -1
     
-    init(_ parent: ContentView) {
+    init(_ parent: Mandelbrot, _ moveSpeed: SIMD2<Float>) {
         
 //        uniforms.aspectRatio = Float(mtkView.frame.size.width / mtkView.frame.size.height)
 //        preferredFramesTime = 1.0 / Float(mtkView.preferredFramesPerSecond)
@@ -119,6 +119,6 @@ class Renderer: NSObject, MTKViewDelegate {
     
     public func setVertices(_ vertices: [Vertex]) {
         //self.vertices += vertices
-        print("hi")
+        let _ = print("hi")
     }
 }

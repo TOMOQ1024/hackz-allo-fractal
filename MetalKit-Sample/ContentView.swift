@@ -9,6 +9,22 @@ import SwiftUI
 import MetalKit
 import Foundation
 
+//class GraphStates: ObservableObject {
+//    @Published var moveSpeed: SIMD2<Float>
+//    @Published var zoomSpeed: Float
+//    @Published var rotateSpeed: Float
+//    init() {
+//        self.moveSpeed = [0, 0]
+//        self.zoomSpeed = 0.0
+//        self.rotateSpeed = 0.0
+//    }
+//    init(ms: SIMD2<Float>, zs: Float, rs: Float) {
+//        self.moveSpeed = ms
+//        self.zoomSpeed = zs
+//        self.rotateSpeed = rs
+//    }
+//}
+
 struct MainView: View {
     let musicPlayer = SoundPlayer()
     @State var position: CGSize = CGSize(width: 1, height: 0)
@@ -28,7 +44,6 @@ struct MainView: View {
     @State var rotationPast:[Angle] = Array(repeating:Angle(), count: 3)
     @State var rotationSpeed: Angle = Angle()
     @State var rttPastIndex: Int = 0
-    
     
     var drag: some Gesture{
         DragGesture()
@@ -116,7 +131,12 @@ struct MainView: View {
 
     var body:some View{
         ZStack(alignment: .leading){
-            ContentView().gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, rotate)))
+            Mandelbrot(
+                moveSpeed:[Float(positionSpeed.width), Float(positionSpeed.height)],
+                zoomSpeed:Float(pinchSpeed),
+                rotateSpeed:Float(rotationSpeed.radians)
+            )
+                .gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, rotate)))
             VStack{
                 Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
                 Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
@@ -133,32 +153,6 @@ struct MainView: View {
             
         }
     }
-}
-
-struct ContentView: UIViewRepresentable {
-
-
-    func makeCoordinator() -> Renderer {
-        Renderer(self)
-    }
-    func makeUIView(context: UIViewRepresentableContext<ContentView>) -> MTKView {
-
-        let mtkView = MTKView()
-        mtkView.delegate = context.coordinator
-        mtkView.preferredFramesPerSecond = 60
-        mtkView.enableSetNeedsDisplay = true
-
-        if let metalDevice = MTLCreateSystemDefaultDevice() {
-            mtkView.device = metalDevice
-        }
-
-        mtkView.framebufferOnly = false
-        mtkView.drawableSize = mtkView.frame.size
-        return mtkView
-    }
-    func updateUIView(_ uiView: MTKView, context: UIViewRepresentableContext<ContentView>) {
-    }
-
 }
 
 struct ContentView_Previews: PreviewProvider {
