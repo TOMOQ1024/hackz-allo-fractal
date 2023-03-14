@@ -14,8 +14,35 @@ struct Uniforms {
     var touch: SIMD2<Float>
 }
 
+struct Graph {
+    var ori: SIMD2<Float>
+    var radius: Float
+    var angle: Float
+    
+    init() {
+        ori = [0.0, 0.0]
+        radius = 2.0
+        angle = Float(CGFloat.pi) / 2.0
+        ori = [0.0, 0.4]
+        radius = 0.1
+        angle = 0.5
+    }
+    
+    func rot(_ p:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
+        return [
+            p.x * cos(a) - p.y * sin(a),
+            p.y * cos(a) + p.x * sin(a)
+        ];
+    }
+    
+    func rotAt(_ p:SIMD2<Float>, _ o:SIMD2<Float>, _ a:Float) -> SIMD2<Float> {
+        return rot(p-o, a) + o;
+    }
+}
+
 // ContentViewのmakeCoordinatorメソッド内で呼び出される
 class Renderer: NSObject, MTKViewDelegate {
+    var graph: Graph = Graph();
     
     var metalDevice: MTLDevice!
     var metalCommandQueue: MTLCommandQueue!
@@ -106,6 +133,7 @@ class Renderer: NSObject, MTKViewDelegate {
         renderEncoder?.setRenderPipelineState(pipelineState)
         renderEncoder?.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         renderEncoder?.setVertexBytes(&uniforms, length: MemoryLayout<Uniforms>.stride, index: 1)
+        renderEncoder?.setVertexBytes(&graph, length: MemoryLayout<Graph>.stride, index: 2)
         //renderEncoder?.drawIndexedPrimitives(type: .triangle, indexCount: indices.count, indexType: .uint16, indexBuffer: indexBuffer, indexBufferOffset: 0)
         renderEncoder?.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 6)
         renderEncoder?.endEncoding()
@@ -115,10 +143,5 @@ class Renderer: NSObject, MTKViewDelegate {
         
         // GPUにコマンドバッファを送る
         commandBuffer?.commit()
-    }
-    
-    public func setVertices(_ vertices: [Vertex]) {
-        //self.vertices += vertices
-        print("hi")
     }
 }
