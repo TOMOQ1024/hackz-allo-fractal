@@ -26,8 +26,8 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
                 }
                 
                 musicPlayers[i].numberOfLoops = -1
-                musicPlayers[i].play()
                 musicPlayers[i].setVolume(calcVolume(i: i, rate: Float(rate)), fadeDuration: 0.1)
+                musicPlayers[i].play()
             }
             
             self.isPlay = true
@@ -54,7 +54,7 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         self.isPlay = false
     }
     func calcVolume(i: Int, rate: Float) -> Float{
-        let res: Float = (rate-1.0-Float(i*10))/10.0
+        let res: Float = (rate-1.0)/pow(10, Float(i+1))
         if(res < 0){
             return 0.0
         }

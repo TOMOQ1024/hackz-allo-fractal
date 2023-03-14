@@ -11,14 +11,14 @@ import Foundation
 
 struct MainView: View {
     let musicPlayer = SoundPlayer()
-    @State var position: CGSize = CGSize(width: 0, height: 0)
+    @State var position: CGSize = CGSize(width: 1, height: 0)
     @State var currentPosition: CGSize = CGSize(width: 0, height: 0)
     @State var positionPast = Array(repeating:CGSize(width: 0, height: 0), count: 3)
     @State var positionSpeed: CGSize = CGSize(width: 0, height: 0)
     @State var posPastIndex: Int = 0
     
     @State var pinchRate: CGFloat = 1.0
-    @State var currentPinchRate: CGFloat = 0.0
+    @State var currentPinchRate: CGFloat = 1.0
     @State var pinchPast:[CGFloat] = Array(repeating:0.0, count: 3)
     @State var pinchSpeed: CGFloat = 0.0
     @State var pinPastIndex: Int = 0
@@ -68,8 +68,9 @@ struct MainView: View {
     var pinch: some Gesture {
         MagnificationGesture()
             .onChanged{value in
-                pinchRate = currentPinchRate + value
+                pinchRate = currentPinchRate * value
                 pinchPast[pinPastIndex] = value
+                
                 if(posPastIndex==2){
                     posPastIndex = 0
                 }else{
@@ -88,7 +89,7 @@ struct MainView: View {
                 }
             }
             .onEnded{value in
-                pinchRate = currentPinchRate + value
+                pinchRate = currentPinchRate * value
                 currentPinchRate = pinchRate
                 pinchSpeed = value - pinchPast[pinPastIndex]
             }
