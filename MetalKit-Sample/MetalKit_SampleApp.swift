@@ -17,7 +17,6 @@ struct MetalKit_SampleApp: App {
         WindowGroup {
             MainView()
                 .statusBar(hidden: true)
-                //.scaledToFill()
                 .edgesIgnoringSafeArea(.all)
         }
     }

@@ -8,30 +8,19 @@
 import SwiftUI
 import Foundation
 
-class GraphStates: ObservableObject {
-    @Published var moveSpeed: SIMD2<Float>
-    @Published var zoomSpeed: Float
-    @Published var rotateSpeed: Float
+class PinchRate: ObservableObject {
+    @Published var value: Float
     init() {
-        self.moveSpeed = [0, 0]
-        self.zoomSpeed = 0.0
-        self.rotateSpeed = 0.0
+        self.value = 1.0
     }
-    init(ms: SIMD2<Float>, zs: Float, rs: Float) {
-        self.moveSpeed = ms
-        self.zoomSpeed = zs
-        self.rotateSpeed = rs
+    init(_ pr: Float) {
+        self.value = pr
     }
 }
 
-
-struct ContentView : View {
-    
-    @EnvironmentObject var graphStates: GraphStates
-//    var _ = print("\(graphStates.zoomSpeed)")
-    var body:some View{
-        VStack {
-            Text("\(graphStates.zoomSpeed)")
-        }
+struct PinchRatePreference: PreferenceKey {
+    static var defaultValue: Float = 1.0
+    static func reduce(value: inout Float, nextValue: () -> Float) {
+        value = nextValue()
     }
 }

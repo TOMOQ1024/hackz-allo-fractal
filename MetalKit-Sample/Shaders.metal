@@ -20,9 +20,10 @@ struct Uniforms {
     float2 touch;
 };
 struct Graph {
-    float2 ori;
+    float2 origin;
     float radius;
     float angle;
+    int renderMode;
 };
 
 struct VertexOut {
@@ -130,7 +131,7 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
     float4 pos = vIn.pos;
     float2 res = vIn.res;
     Graph gra = vIn.graph;
-    float2 ori = gra.ori;
+    float2 ori = gra.origin;
     float rad = gra.radius;
     float ang = gra.angle;
     
@@ -139,11 +140,11 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
     
     
     //int
-    switch(3){
+    switch(gra.renderMode){
         case 0:
         {
             MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 50);
-            half c = pow(1.0 * calcRes.itr / 1000, 0.5);
+            half c = pow(1.0 * calcRes.itr / 50, 0.5);
             return calcRes.itr < 0 ? half4(1.0) : half4(c, 0, c, 1.0);
         }
         case 1:
@@ -156,9 +157,9 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
         }
         case 2:
         {
-            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 100, 100);
-            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/10000,0), ori, ang), 1000, 1000);
-            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/10000), ori, ang), 1000, 1000);
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 300, 100);
+            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/10000,0), ori, ang), 300, 100);
+            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/10000), ori, ang), 300, 100);
             half narg = fmod(fmod(atan2(length(calcResX.z) - length(calcRes.z), length(calcResY.z) - length(calcRes.z))/2/M_PI_F, 1.0)+1.0, 1.0);
             //half ab = exp(-1/length(calcRes.z));
             float3 c = hsv2rgb(float3(narg, 0.2, 1.0));
@@ -166,12 +167,19 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
         }
         case 3:
         {
-            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 100, 100);
-            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/100000,0), ori, ang), 100, 100);
-            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/100000), ori, ang), 100, 100);
+            // 
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 300, 100);
+            MCOut calcResX = MandelbrotCalc(RotateAt(cpl+float2(rad/100000,0), ori, ang), 300, 100);
+            MCOut calcResY = MandelbrotCalc(RotateAt(cpl+float2(0,rad/100000), ori, ang), 300, 100);
             half narg = atan2(length(calcResX.z) - length(calcRes.z), length(calcResY.z) - length(calcRes.z));
             half c = (cos(narg+0.8)+1)/2;
             return half4(c, c, c, 1.0);
+        }
+        case 4:
+        {
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 200);
+            half c = calcRes.itr / 40.0;
+            return calcRes.itr < 0 ? half4(1.0) : half4(cos(c)*cos(c), sin(c)*sin(c), 1.0, 1.0);
         }
     }
     
