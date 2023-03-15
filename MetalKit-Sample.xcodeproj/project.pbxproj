@@ -10,6 +10,9 @@
 		78883A2B29C017E7008152CB /* Mandelbrot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78883A2A29C017E7008152CB /* Mandelbrot.swift */; };
 		78883A2D29C01838008152CB /* GraphStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78883A2C29C01838008152CB /* GraphStates.swift */; };
 		7888D6A129BF175800942DC5 /* SoundPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7888D6A029BF175800942DC5 /* SoundPlayer.swift */; };
+		78F55BCD29C1126400C888A5 /* Realm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F55BCC29C1126400C888A5 /* Realm.swift */; };
+		78F55BD029C115E500C888A5 /* Pods_MetalKit_Sample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78F55BCF29C115E500C888A5 /* Pods_MetalKit_Sample.framework */; };
+		78F55BD129C115E500C888A5 /* Pods_MetalKit_Sample.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 78F55BCF29C115E500C888A5 /* Pods_MetalKit_Sample.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E41529F129B8CCB4008D2BCE /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = E41529F029B8CCB4008D2BCE /* Shaders.metal */; };
 		E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF0E29B4DF75007A3B11 /* MetalKit_SampleApp.swift */; };
 		E47DAF1129B4DF75007A3B11 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF1029B4DF75007A3B11 /* ContentView.swift */; };
@@ -18,10 +21,26 @@
 		E47DAF1D29B5B2B7007A3B11 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47DAF1C29B5B2B7007A3B11 /* Renderer.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		78F55BD229C115E500C888A5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				78F55BD129C115E500C888A5 /* Pods_MetalKit_Sample.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		78883A2A29C017E7008152CB /* Mandelbrot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mandelbrot.swift; sourceTree = "<group>"; };
 		78883A2C29C01838008152CB /* GraphStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStates.swift; sourceTree = "<group>"; };
 		7888D6A029BF175800942DC5 /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
+		78F55BCC29C1126400C888A5 /* Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
+		78F55BCF29C115E500C888A5 /* Pods_MetalKit_Sample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MetalKit_Sample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E41529F029B8CCB4008D2BCE /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		E41529F329BA8F9C008D2BCE /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
 		E47DAF0B29B4DF75007A3B11 /* MetalKit-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MetalKit-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,17 +56,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78F55BD029C115E500C888A5 /* Pods_MetalKit_Sample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78F55BCE29C115E500C888A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				78F55BCF29C115E500C888A5 /* Pods_MetalKit_Sample.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E47DAF0229B4DF75007A3B11 = {
 			isa = PBXGroup;
 			children = (
 				E47DAF0D29B4DF75007A3B11 /* MetalKit-Sample */,
 				E47DAF0C29B4DF75007A3B11 /* Products */,
+				78F55BCE29C115E500C888A5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -68,6 +97,7 @@
 				78883A2A29C017E7008152CB /* Mandelbrot.swift */,
 				78883A2C29C01838008152CB /* GraphStates.swift */,
 				E47DAF1C29B5B2B7007A3B11 /* Renderer.swift */,
+				78F55BCC29C1126400C888A5 /* Realm.swift */,
 				E47DAF1229B4DF76007A3B11 /* Assets.xcassets */,
 				E47DAF1429B4DF76007A3B11 /* Preview Content */,
 				E41529F029B8CCB4008D2BCE /* Shaders.metal */,
@@ -94,6 +124,7 @@
 				E47DAF0729B4DF75007A3B11 /* Sources */,
 				E47DAF0829B4DF75007A3B11 /* Frameworks */,
 				E47DAF0929B4DF75007A3B11 /* Resources */,
+				78F55BD229C115E500C888A5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -161,6 +192,7 @@
 				78883A2B29C017E7008152CB /* Mandelbrot.swift in Sources */,
 				E47DAF0F29B4DF75007A3B11 /* MetalKit_SampleApp.swift in Sources */,
 				E41529F129B8CCB4008D2BCE /* Shaders.metal in Sources */,
+				78F55BCD29C1126400C888A5 /* Realm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

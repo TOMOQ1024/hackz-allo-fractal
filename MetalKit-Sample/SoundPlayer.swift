@@ -47,14 +47,18 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         for i in 0..<TrakNumber {
             musicPlayers[i].setVolume(calcVolume(i: i, rate: rate), fadeDuration: 0.1)
         }
-        
-        print("music play!")
     }
-    func switchMode(mode: Int, rate: CGFloat){
+    func switchMode(mode: Int, rate: Float){
+        if(currentMode == mode || mode == -1){
+            return
+        }
+        print(currentMode)
+        print("newMode:\(mode)")
         stopAllMusic()
         musicPlayers = []
         currentMode=mode
         musicPlay(rate: rate)
+        
     }
     func stopAllMusic(){
         if(!self.isPlay) {
@@ -67,7 +71,7 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         self.isPlay = false
     }
     func calcVolume(i: Int, rate: Float) -> Float{
-        let res: Float = (rate-1.0)/pow(10, Float(i+1))
+        let res: Float = (rate-1.0)/pow(5.5, Float(i+1))
         if(res < 0){
             return 0.0
         }

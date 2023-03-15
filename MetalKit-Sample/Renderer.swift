@@ -198,6 +198,7 @@ class Renderer: NSObject, MTKViewDelegate {
         graph.origin += [-origin_delta.x, -origin_delta.y]
         graph.origin = Clamp2([-2, -2], graph.origin, [2, 2])
         
+        musicPlayer.switchMode(mode: _rm%graph.renderModesCount, rate: zoomRate)
         if(zoomRate > 1){
             if(musicPlayer.isPlay){
                 musicPlayer.update(rate: zoomRate)
@@ -207,5 +208,6 @@ class Renderer: NSObject, MTKViewDelegate {
         }else{
             musicPlayer.stopAllMusic()
         }
+        print("zoom:\(zoomRate)")
     }
 }
