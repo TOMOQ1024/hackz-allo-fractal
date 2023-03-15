@@ -24,23 +24,25 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		78F55BD229C115E500C888A5 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
 				78F55BD129C115E500C888A5 /* Pods_MetalKit_Sample.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		39BE2D00233A8D2244C03EA9 /* Pods-MetalKit-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalKit-Sample.debug.xcconfig"; path = "Target Support Files/Pods-MetalKit-Sample/Pods-MetalKit-Sample.debug.xcconfig"; sourceTree = "<group>"; };
 		78883A2A29C017E7008152CB /* Mandelbrot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mandelbrot.swift; sourceTree = "<group>"; };
 		78883A2C29C01838008152CB /* GraphStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphStates.swift; sourceTree = "<group>"; };
 		7888D6A029BF175800942DC5 /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
 		78F55BCC29C1126400C888A5 /* Realm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Realm.swift; sourceTree = "<group>"; };
 		78F55BCF29C115E500C888A5 /* Pods_MetalKit_Sample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MetalKit_Sample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A50D74853485FDEB7E02BC0 /* Pods-MetalKit-Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MetalKit-Sample.release.xcconfig"; path = "Target Support Files/Pods-MetalKit-Sample/Pods-MetalKit-Sample.release.xcconfig"; sourceTree = "<group>"; };
 		E41529F029B8CCB4008D2BCE /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		E41529F329BA8F9C008D2BCE /* definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = definitions.h; sourceTree = "<group>"; };
 		E47DAF0B29B4DF75007A3B11 /* MetalKit-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MetalKit-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +65,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		411CCDD51368AE48E34BCFB8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				39BE2D00233A8D2244C03EA9 /* Pods-MetalKit-Sample.debug.xcconfig */,
+				7A50D74853485FDEB7E02BC0 /* Pods-MetalKit-Sample.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		78F55BCE29C115E500C888A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -77,6 +88,7 @@
 				E47DAF0D29B4DF75007A3B11 /* MetalKit-Sample */,
 				E47DAF0C29B4DF75007A3B11 /* Products */,
 				78F55BCE29C115E500C888A5 /* Frameworks */,
+				411CCDD51368AE48E34BCFB8 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,10 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E47DAF1929B4DF76007A3B11 /* Build configuration list for PBXNativeTarget "MetalKit-Sample" */;
 			buildPhases = (
+				63E7C71B00D1CD00A9F93943 /* [CP] Check Pods Manifest.lock */,
 				E47DAF0729B4DF75007A3B11 /* Sources */,
 				E47DAF0829B4DF75007A3B11 /* Frameworks */,
 				E47DAF0929B4DF75007A3B11 /* Resources */,
 				78F55BD229C115E500C888A5 /* Embed Frameworks */,
+				D70EA2FE3680E163D9318E51 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -179,6 +193,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		63E7C71B00D1CD00A9F93943 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MetalKit-Sample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D70EA2FE3680E163D9318E51 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetalKit-Sample/Pods-MetalKit-Sample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MetalKit-Sample/Pods-MetalKit-Sample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MetalKit-Sample/Pods-MetalKit-Sample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E47DAF0729B4DF75007A3B11 /* Sources */ = {
@@ -315,6 +371,7 @@
 		};
 		E47DAF1A29B4DF76007A3B11 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39BE2D00233A8D2244C03EA9 /* Pods-MetalKit-Sample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -346,6 +403,7 @@
 		};
 		E47DAF1B29B4DF76007A3B11 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A50D74853485FDEB7E02BC0 /* Pods-MetalKit-Sample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
