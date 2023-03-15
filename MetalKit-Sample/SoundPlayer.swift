@@ -9,14 +9,21 @@ import AVFoundation
 
 class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
     let TrakNumber = 4
-    let musicDatas = [NSDataAsset(name: "LoopPad")!.data, NSDataAsset(name: "LoopCello")!.data, NSDataAsset(name: "LoopBass")!.data, NSDataAsset(name: "LoopPiano")!.data]
+    var currentMode = 0
+    let musicDatas = [
+        [NSDataAsset(name: "LoopPad")!.data, NSDataAsset(name: "LoopCello")!.data, NSDataAsset(name: "LoopBass")!.data, NSDataAsset(name: "LoopPiano")!.data],
+        [NSDataAsset(name: "BC_Pad")!.data, NSDataAsset(name: "BC_Brass")!.data, NSDataAsset(name: "BC_Bass")!.data, NSDataAsset(name: "BC_Bell")!.data],
+        [NSDataAsset(name: "Sepias_Pad")!.data, NSDataAsset(name: "Sepias_Bass")!.data, NSDataAsset(name: "Sepias_Piano")!.data, NSDataAsset(name: "Sepias_Bell")!.data],
+        [NSDataAsset(name: "Metal_Pad")!.data, NSDataAsset(name: "Metal_Bass")!.data, NSDataAsset(name: "Metal_Calv")!.data, NSDataAsset(name: "Metal_Lead")!.data],
+        [NSDataAsset(name: "Psych_Pad")!.data, NSDataAsset(name: "Psych_Bass")!.data, NSDataAsset(name: "Psych_Piano")!.data, NSDataAsset(name: "Psych_Drum")!.data]
+    ]
     var isPlay = false
     var musicPlayers : [AVAudioPlayer] = []
     
     func musicPlay(rate: Float) {
         do{
             for i in 0..<TrakNumber {
-                let mp: AVAudioPlayer! = try AVAudioPlayer(data: musicDatas[i])
+                let mp: AVAudioPlayer! = try AVAudioPlayer(data: musicDatas[currentMode][i])
                 if let unwrap_mp = mp{
                     print(unwrap_mp)
                     musicPlayers.append(unwrap_mp)
@@ -26,7 +33,7 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
                 }
                 
                 musicPlayers[i].numberOfLoops = -1
-                musicPlayers[i].setVolume(calcVolume(i: i, rate: rate), fadeDuration: 0.1)
+                musicPlayers[i].setVolume(calcVolume(i: i, rate: Float(rate)), fadeDuration: 0.5)
                 musicPlayers[i].play()
             }
             
@@ -42,6 +49,12 @@ class SoundPlayer: NSObject, ObservableObject, AVAudioPlayerDelegate {
         }
         
         print("music play!")
+    }
+    func switchMode(mode: Int, rate: CGFloat){
+        stopAllMusic()
+        musicPlayers = []
+        currentMode=mode
+        musicPlay(rate: rate)
     }
     func stopAllMusic(){
         if(!self.isPlay) {
