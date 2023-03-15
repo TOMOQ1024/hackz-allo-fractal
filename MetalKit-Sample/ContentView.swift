@@ -149,22 +149,22 @@ struct MainView: View {
                 renderMode:renderMode
             )
                 .gesture(SimultaneousGesture(drag, SimultaneousGesture(pinch, SimultaneousGesture(rotate, tap))))
-            VStack{
-                Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
-                Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
-                Text("px: \(positionPast[posPastIndex].width)py: \(positionPast[posPastIndex].height)").position(x:200, y:-50)
-                Text("rate:\(pinchRate)spd:\(pinchSpeed)").position(x:200, y:0)
-                Text("rotate:\(rotation.radians)spd:\(rotationSpeed.radians)").position(x:200, y:0)
-                Button(action: {
-                    position = CGSize(width: 0, height: 0)
-                    pinchRate = 1.0
-                }){
-                    Text("Reset")
-                }.position(x:200, y:-100)
-            }
+//            VStack{
+//                Text("x: \(position.width)y: \(position.height)").position(x:200, y:300)
+//                Text("dx: \(positionSpeed.width)dy: \(positionSpeed.height)").position(x:200, y:0)
+//                Text("px: \(positionPast[posPastIndex].width)py: \(positionPast[posPastIndex].height)").position(x:200, y:-50)
+//                Text("rate:\(pinchRate)spd:\(pinchSpeed)").position(x:200, y:0)
+//                Text("rotate:\(rotation.radians)spd:\(rotationSpeed.radians)").position(x:200, y:0)
+//                Button(action: {
+//                    position = CGSize(width: 0, height: 0)
+//                    pinchRate = 1.0
+//                }){
+//                    Text("Reset")
+//                }.position(x:200, y:-100)
+//            }
             VStack {
                 Button(action: {
-                    print("hello")
+//                    print("hello")
                     renderMode += 1
                 }){
                     Image(systemName: "arrow.left.arrow.right")
