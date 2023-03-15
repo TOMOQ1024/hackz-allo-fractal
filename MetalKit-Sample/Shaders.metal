@@ -54,8 +54,8 @@ MCOut MandelbrotCalc(float2 c, float absLimit = 2, int max_itr = 50){
 // rotate float2
 float2 Rotate(float2 pos, float angle){
     return {
-        pos.x * cos(angle) - pos.y * sin(angle),
-        pos.y * cos(angle) + pos.x * sin(angle)
+        pos.x * cos(angle) + pos.y * sin(angle),
+        pos.y * cos(angle) - pos.x * sin(angle)
     };
 }
 
@@ -136,15 +136,15 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
     float ang = gra.angle;
     
     float2 cpl = float2((pos.x / res.x * 2 - 1) * rad + ori.x,
-                        (pos.y / res.y * 2 - 1) * res.y / res.x * rad - ori.y);
+                        -(pos.y / res.y * 2 - 1) * res.y / res.x * rad + ori.y);
     
     
     //int
     switch(gra.renderMode){
         case 0:
         {
-            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 50);
-            half c = pow(1.0 * calcRes.itr / 50, 0.5);
+            MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 100);
+            half c = pow(1.0 * calcRes.itr / 100, 0.5);
             return calcRes.itr < 0 ? half4(1.0) : half4(c, 0, c, 1.0);
         }
         case 1:
@@ -175,7 +175,7 @@ fragment half4 fragmentShader(VertexOut vIn [[stage_in]]) {
             half c = (cos(narg+0.8)+1)/2;
             return half4(c, c, c, 1.0);
         }
-        case 4:
+        default:
         {
             MCOut calcRes = MandelbrotCalc(RotateAt(cpl, ori, ang), 2, 200);
             half c = calcRes.itr / 40.0;

@@ -49,8 +49,8 @@ struct Graph {
         radius = 2.0
         angle = Float(CGFloat.pi) / 2.0
         renderMode = 1
-        origin = [0.0, 0.4]
-        radius = 0.1
+        origin = [-1.0, 0.0]
+        radius = 0.5
         angle = 0.5
     }
 }
@@ -74,7 +74,7 @@ class Renderer: NSObject, MTKViewDelegate {
     
     let musicPlayer = SoundPlayer()
     
-    init(_ parent: Mandelbrot, _ moveSpeed: SIMD2<Float>) {
+    init(_ parent: Mandelbrot) {
         
 //        uniforms.aspectRatio = Float(mtkView.frame.size.width / mtkView.frame.size.height)
 //        preferredFramesTime = 1.0 / Float(mtkView.preferredFramesPerSecond)
@@ -168,7 +168,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var zoomRate: Float = 1
     func updateGraph(_ isDataProvided: Bool, _ _ms: SIMD2<Float> = [0, 0], _ _zs: Float = 0, _ _rs: Float = 0, _ _rm: Int = -1) {
         var ms = _ms
-        var zs = pow(_zs, 0.5)
+        var zs = _zs
         var rs = Clamp(-1,_rs,1)
         
         if(abs(rs) < 10e-4){
@@ -184,6 +184,10 @@ class Renderer: NSObject, MTKViewDelegate {
             graph.renderMode = _rm % graph.renderModesCount
         }
         else{
+            // 減衰
+//            moveSpeed /+ 1.01
+//            zoomSpeed = pow(zoomSpeed, 0.99)
+//            rotateSpeed /= 1.01
             ms = moveSpeed
             zs = zoomSpeed
             rs = rotateSpeed
@@ -193,9 +197,11 @@ class Renderer: NSObject, MTKViewDelegate {
         if(radSpeed > 1.0e-4 && radSpeed < 1.0e+3){
             zoomRate *= zs
         }
-        graph.angle -= rs/3
-        let origin_delta = rot([ms.x, ms.y] / uniforms.res.x * graph.radius * 2, -graph.angle)
-        graph.origin += [-origin_delta.x, -origin_delta.y]
+        graph.angle -= rs
+        //let origin_delta_p = rot([ms.x, ms.y] / Float(UIScreen.main.bounds.width) * graph.radius, graph.angle)
+        print(ms)
+        let origin_delta = rot([ms.x, ms.y] / Float(UIScreen.main.bounds.width) * graph.radius, graph.angle)
+        graph.origin -= [origin_delta.x, -origin_delta.y]
         graph.origin = Clamp2([-2, -2], graph.origin, [2, 2])
         
         if(zoomRate > 1){

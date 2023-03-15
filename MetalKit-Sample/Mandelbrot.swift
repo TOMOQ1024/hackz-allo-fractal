@@ -16,7 +16,7 @@ struct Mandelbrot: UIViewRepresentable {
     let renderMode: Int
     
     func makeCoordinator() -> Renderer {
-        Renderer(self, moveSpeed)
+        Renderer(self)
     }
     func makeUIView(context: UIViewRepresentableContext<Mandelbrot>) -> MTKView {
         
